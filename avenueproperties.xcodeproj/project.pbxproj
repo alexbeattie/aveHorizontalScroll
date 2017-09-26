@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7B9F4E0D79C73CAF2B481640 /* Pods_avenueproperties.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6BFC9DD8F4D8E4E8A88904 /* Pods_avenueproperties.framework */; };
+		8E14DCE91F7B0D0300B19146 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E14DCE81F7B0D0300B19146 /* Annotation.swift */; };
 		8E18CA341F794C470000A707 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E18CA331F794C470000A707 /* AppDelegate.swift */; };
 		8E18CA361F794C470000A707 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E18CA351F794C470000A707 /* ViewController.swift */; };
 		8E18CA391F794C470000A707 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E18CA371F794C470000A707 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		8A6BFC9DD8F4D8E4E8A88904 /* Pods_avenueproperties.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_avenueproperties.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E14DCE81F7B0D0300B19146 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		8E18CA301F794C470000A707 /* avenueproperties.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = avenueproperties.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E18CA331F794C470000A707 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8E18CA351F794C470000A707 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				8E18CA3F1F794C470000A707 /* Info.plist */,
 				8E18CA471F794C880000A707 /* Listing.swift */,
 				8E3871591F79898C000B4CE7 /* ListingDetailController.swift */,
+				8E14DCE81F7B0D0300B19146 /* Annotation.swift */,
 				8E38715B1F799212000B4CE7 /* LIstingSlides.swift */,
 			);
 			path = avenueproperties;
@@ -224,6 +227,7 @@
 				8E38715A1F79898C000B4CE7 /* ListingDetailController.swift in Sources */,
 				8E38715C1F799212000B4CE7 /* LIstingSlides.swift in Sources */,
 				8E18CA481F794C880000A707 /* Listing.swift in Sources */,
+				8E14DCE91F7B0D0300B19146 /* Annotation.swift in Sources */,
 				8E18CA341F794C470000A707 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

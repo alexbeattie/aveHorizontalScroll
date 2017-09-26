@@ -130,7 +130,7 @@ class ListingSlides: BaseCell, UICollectionViewDataSource, UICollectionViewDeleg
         }
         var imageView: UIImageView = {
             let iv = UIImageView()
-            iv.contentMode = .scaleToFill
+            iv.contentMode = .scaleAspectFill
             iv.translatesAutoresizingMaskIntoConstraints = false
 //            iv.layer.masksToBounds = true
             iv.backgroundColor = UIColor.green
