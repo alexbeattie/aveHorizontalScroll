@@ -1,0 +1,6 @@
+framework module Pods_avenueproperties {
+  umbrella header "Pods-avenueproperties-umbrella.h"
+
+  export *
+  module * { export * }
+}
