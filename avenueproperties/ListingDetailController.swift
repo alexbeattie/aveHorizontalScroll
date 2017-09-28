@@ -177,22 +177,42 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         collectionView?.collectionViewLayout.invalidateLayout()
     }
 //    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mapId, for: indexPath) as! MapCell
-//        cell.listing = listing
+//        if indexPath.item == 3 {
 //
-////        cell.addSubview(mapView)
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mapId, for: indexPath) as! MapCell
+//            cell.mapView.mapType = .standard
+//            cell.mapView.delegate = self
+//            if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
+//
+//                let location = CLLocationCoordinate2DMake(lat, lng)
+//                let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, 27500.0, 27500.0)
+//                cell.mapView.setRegion(coordinateRegion, animated: true)
+//
+//                let pin = MKPointAnnotation()
+//
+//
+//                pin.coordinate = location
+//                pin.title = listing?.address?.full?.capitalized
+//                if let listPrice = listing?.listPrice {
+//                    let numberFormatter = NumberFormatter()
+//                    numberFormatter.numberStyle = .decimal
+//
+//                    let subtitle = "$\(numberFormatter.string(from: NSNumber(value:(UInt64(listPrice))))!)"
+//                    pin.subtitle = subtitle
+//                }
+//
+//                cell.mapView.addAnnotation(pin)
+//
+//            }
+//
+//        }
 //
 //    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//    }
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
-//        setupThumbNailImage()
-        
+ 
         let annoView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "Default")
         annoView.pinTintColor = #colorLiteral(red: 0.5137254902, green: 0.8470588235, blue: 0.8117647059, alpha: 1)
         annoView.animatesDrop = true
@@ -210,23 +230,21 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         
         annoView.rightCalloutAccessoryView = rightButton
         
-        
-//        let leftIconView = UIImageView()
-//        leftIconView.contentMode = .scaleAspectFill
-//        if let thumnailImageName = listing?.photos![0] {
-//            leftIconView.image = UIImage(named: thumnailImageName)
-//            self.setupThumbNailImage()
-//
-//        }
-//
-//
-//        let newBounds = CGRect(x:0.0, y:0.0, width:54.0, height:54.0)
-//        leftIconView.bounds = newBounds
-//        annoView.leftCalloutAccessoryView = leftIconView
-        
+        //Add a LEFT IMAGE VIEW
+        let leftIconView = UIImageView()
+        leftIconView.contentMode = .scaleAspectFill
+
+        if let thumbnailImageUrl = listing?.photos?.first {
+            leftIconView.loadImageUsingUrlString(urlString: thumbnailImageUrl)
+        }
+
+        let newBounds = CGRect(x:0.0, y:0.0, width:54.0, height:54.0)
+        leftIconView.bounds = newBounds
+        annoView.leftCalloutAccessoryView = leftIconView
         
         return annoView
     }
+
     func goOutToGetMap() {
         
         
@@ -244,11 +262,6 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         
         
     }
-//    func setupThumbNailImage() {
-//        if let thumbnailImageUrl = listing?.photos?.first {
-//            leftIconView.loadImageUsingUrlString(urlString: thumbnailImageUrl)
-//        }
-//    }
 
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
@@ -259,24 +272,14 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         }
         alertController.addAction(OKAction)
         
-        present(alertController, animated: true) {
-            
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            
-        }
+        present(alertController, animated: true) { }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in }
         alertController.addAction(cancelAction)
     }
 
     fileprivate func descriptionAttributedText() -> NSAttributedString {
        
         
-//        let theAddress = listing?.address?.full?.capitalized
-//         let theAddress = listing?.address?.full?.capitalized
-        
-
-//        let attributedText = NSMutableAttributedString(string: theAddress, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
-//        let attributedText = NSMutableAttributedString(string: "\(theAddress ?? "")\n", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
         let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)])
 
         
