@@ -23,6 +23,7 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
     
     var mapView:MKMapView!
     let pin = MKPointAnnotation()
+    var region: MKCoordinateRegion!
 
     
     var listing: Listing? {
@@ -30,8 +31,8 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
             if listing?.photos != nil {
                 return
             }
-            mapView.mapType = .standard
-            mapView.delegate = self
+//            mapView.mapType = .standard
+//            mapView.delegate = self
 
 //                if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
 //                    let location = CLLocationCoordinate2DMake(lat, lng)
@@ -50,6 +51,7 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         collectionView?.register(ListingSlides.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(TitleCell.self, forCellWithReuseIdentifier: titleId)
@@ -67,6 +69,8 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
 //            pin.coordinate = location
 //        }
 //        mapView.addAnnotation(pin)
+//        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, 27500.0, 27500.0)
+//        mapView.setRegion(location, animated: t)
         setupNavBarButtons()
       
 
@@ -77,18 +81,7 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         navigationItem.rightBarButtonItem = videoButton
     }
 
-//    func mapView(_ mapView: MKMapView!, viewFor annotation: MKAnnotation!) -> MKAnnotationView! {
-//        let identifier = "mapId"
-//        var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-//        if view == nil {
-//            view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-//            view?.canShowCallout = true
-//        } else {
-//            view?.annotation = annotation
-//        }
-//        return view
-//
-//    }
+  
     func playVideo() {
         
     }
@@ -123,11 +116,33 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
             return cell
         }
         if indexPath.item == 3 {
+            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mapId, for: indexPath) as! MapCell
+            cell.mapView.mapType = .standard
+            cell.mapView.delegate = self
             if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
+            
                 let location = CLLocationCoordinate2DMake(lat, lng)
+                let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, 27500.0, 27500.0)
+                cell.mapView.setRegion(coordinateRegion, animated: true)
+
+                let pin = MKPointAnnotation()
+                
+
                 pin.coordinate = location
+                pin.title = listing?.address?.full?.capitalized
+                if let listPrice = listing?.listPrice {
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .decimal
+                    
+                    let subtitle = "$\(numberFormatter.string(from: NSNumber(value:(UInt64(listPrice))))!)"
+                    pin.subtitle = subtitle
+                }
+
+                cell.mapView.addAnnotation(pin)
+
             }
+            
             cell.mapView.addAnnotation(pin)
 
 
@@ -152,6 +167,84 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //
 //    }
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+//        setupThumbNailImage()
+        
+        let annoView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "Default")
+        annoView.pinTintColor = #colorLiteral(red: 0.5137254902, green: 0.8470588235, blue: 0.8117647059, alpha: 1)
+        annoView.animatesDrop = true
+        annoView.canShowCallout = true
+        let swiftColor = #colorLiteral(red: 0.5137254902, green: 0.8470588235, blue: 0.8117647059, alpha: 1)
+        annoView.centerOffset = CGPoint(x: 100, y: 400)
+        annoView.pinTintColor = swiftColor
+        
+        // Add a RIGHT CALLOUT Accessory
+        let rightButton = UIButton(type: UIButtonType.detailDisclosure)
+        rightButton.frame = CGRect(x:0, y:0, width:32, height:32)
+        rightButton.layer.cornerRadius = rightButton.bounds.size.width/2
+        rightButton.clipsToBounds = true
+        rightButton.tintColor = #colorLiteral(red: 0.5137254902, green: 0.8470588235, blue: 0.8117647059, alpha: 1)
+        
+        annoView.rightCalloutAccessoryView = rightButton
+        
+        
+//        let leftIconView = UIImageView()
+//        leftIconView.contentMode = .scaleAspectFill
+//        if let thumnailImageName = listing?.photos![0] {
+//            leftIconView.image = UIImage(named: thumnailImageName)
+//            self.setupThumbNailImage()
+//
+//        }
+//
+//
+//        let newBounds = CGRect(x:0.0, y:0.0, width:54.0, height:54.0)
+//        leftIconView.bounds = newBounds
+//        annoView.leftCalloutAccessoryView = leftIconView
+        
+        
+        return annoView
+    }
+    func goOutToGetMap() {
+        
+        
+        let lat = listing?.geo?.lat
+        let lng = listing?.geo?.lng
+        let location = CLLocationCoordinate2D(latitude: lat!, longitude: lng!)
+        
+        let placemark = MKPlacemark(coordinate: location, addressDictionary: nil)
+        
+        let item = MKMapItem(placemark: placemark)
+        item.name = listing?.address?.full?.capitalized
+        item.openInMaps (launchOptions: [MKLaunchOptionsMapTypeKey: 2,
+                                         MKLaunchOptionsMapCenterKey:NSValue(mkCoordinate: placemark.coordinate),
+                                         MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving])
+        
+        
+    }
+//    func setupThumbNailImage() {
+//        if let thumbnailImageUrl = listing?.photos?.first {
+//            leftIconView.loadImageUsingUrlString(urlString: thumbnailImageUrl)
+//        }
+//    }
+
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        
+        let alertController = UIAlertController(title: nil, message: "Driving directions", preferredStyle: .actionSheet)
+        let OKAction = UIAlertAction(title: "Get Directions", style: .default) { (action) in
+            self.goOutToGetMap()
+        }
+        alertController.addAction(OKAction)
+        
+        present(alertController, animated: true) {
+            
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            
+        }
+        alertController.addAction(cancelAction)
+    }
 
     fileprivate func descriptionAttributedText() -> NSAttributedString {
        
@@ -303,26 +396,31 @@ class AppDetailDescriptionCell: BaseCell {
 
 
 class MapCell: BaseCell, MKMapViewDelegate  {
-    //    var mapView:MKMapView!
+
     var mapView = MKMapView()
-//      let pin = MKPointAnnotation()
 
     var listing: Listing? {
         didSet {
-//            if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
-//                let location = CLLocationCoordinate2DMake(lat, lng)
-//                pin.coordinate = location
-//            }
-//            mapView.addAnnotation(pin)
+            if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
+                
+                let location = CLLocationCoordinate2DMake(lat, lng)
+                let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, 27500.0, 27500.0)
+                mapView.setRegion(coordinateRegion, animated: false)
+                
+                let pin = MKPointAnnotation()
+                
+                pin.coordinate = location
+                mapView.addAnnotation(pin)
+                
+            }
         }
     }
 
     override func setupViews() {
-//        mapView.addAnnotation(pin)
 
         addSubview(mapView)
         addConstraintsWithFormat("H:|[v0]|", views: mapView)
-        addConstraintsWithFormat("V:|[v0(200)]|", views: mapView)
+        addConstraintsWithFormat("V:|[v0]|", views: mapView)
     }
 }
 
