@@ -11,8 +11,9 @@ import SDWebImage
 import AVKit
 import AVFoundation
 import MapKit
+import CoreLocation
 
-class ListingDetailController: UICollectionViewController, UICollectionViewDelegateFlowLayout, MKMapViewDelegate {
+class ListingDetailController: UICollectionViewController, UICollectionViewDelegateFlowLayout, MKMapViewDelegate, CLLocationManagerDelegate {
     let cellId = "cellId"
     let descriptionId = "descriptionId"
     let headerId = "headerId"
@@ -24,6 +25,7 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
     var mapView:MKMapView!
     let pin = MKPointAnnotation()
     var region: MKCoordinateRegion!
+    let locationManager = CLLocationManager()
 
     
     var listing: Listing? {
@@ -60,7 +62,10 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         collectionView?.showsVerticalScrollIndicator = false
         
         collectionView?.backgroundColor = UIColor.white
-        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
 //        var mapView = MKMapView()
 //        let pin = MKPointAnnotation()
 //
@@ -75,6 +80,26 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
       
 
     }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations[locations.count - 1]
+        if location.horizontalAccuracy > 0 {
+            
+            locationManager.stopUpdatingLocation()
+            
+            print("longitude = \(location.coordinate.longitude), latitude = \(location.coordinate.latitude)")
+            
+//            let latitude = String(location.coordinate.latitude)
+//            let longitude = String(location.coordinate.longitude)
+            
+        }
+    }
+    
+    
+    //Write the didFailWithError method here:
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+
     func setupNavBarButtons() {
         let movieIcon = UIImage(named: "movie")?.withRenderingMode(.alwaysOriginal)
         let videoButton = UIBarButtonItem(image: movieIcon, style: .plain, target: self, action: #selector(handleVideo))
@@ -146,6 +171,10 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ListingSlides
         cell.listing = listing
         return cell
+    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
 //    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mapId, for: indexPath) as! MapCell
