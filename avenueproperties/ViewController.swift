@@ -15,7 +15,11 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     var listings: [Listing]?
 //    var listingDetailController:ListingDetailController?
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+//        hidesBottomBarWhenPushed = false
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         Listing.fetchListing { (listings) -> () in

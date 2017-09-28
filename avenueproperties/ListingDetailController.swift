@@ -50,7 +50,10 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         
       
     }
-
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.hidesBottomBarWhenPushed = false
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
