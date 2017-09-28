@@ -9,7 +9,7 @@
 import MapKit
 import Contacts
 
-class Annotation: NSObject, MKAnnotation {
+class ListingAnno: NSObject, MKAnnotation {
     var listing: Listing?
     
     let title: String?
@@ -23,29 +23,6 @@ class Annotation: NSObject, MKAnnotation {
         
         super.init()
     }
-    
-    //    init?(json: [Any]) {
-    //        self.title = listing?.address
-    ////        self.subtitle = listing?.listPrice
-    //
-    //        // 2
-    //        if let latitude = Double(listing?.geoLng as! String),
-    //            let longitude = Double(listing?.geoLat as! String) {
-    //            self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-    //        } else {
-    //            self.coordinate = CLLocationCoordinate2D()
-    //        }
-    //    }
-    // annotation callout opens this mapItem in Maps app
-    func mapItem() -> MKMapItem {
-        //        let addressDict = [CNPostalAddressStreetKey: subtitle!]
-        let placemark = MKPlacemark(coordinate: coordinate)
-        
-        let mapItem = MKMapItem(placemark: placemark)
-        mapItem.name = title
-        
-        return mapItem
-    }
-    
 }
+
 

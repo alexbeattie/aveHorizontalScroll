@@ -18,15 +18,11 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
     let headerId = "headerId"
     let titleId = "titleId"
     let mapId = "mapId"
-    var mapView:MKMapView!
-    var annotation:MKAnnotation!
-    var pointAnnotation:MKPointAnnotation!
-    var pinView:MKPinAnnotationView!
-    var region: MKCoordinateRegion!
-    var mapType: MKMapType!
     var player:AVPlayer!
     var playerLayer:AVPlayerLayer!
-    var pin:MKAnnotation!
+    
+    var mapView:MKMapView!
+    let pin = MKPointAnnotation()
 
     
     var listing: Listing? {
@@ -34,91 +30,45 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
             if listing?.photos != nil {
                 return
             }
-//            nameLabel.text = listing?.address?.full?.capitalized
-//
-//            if let price = listing?.listPrice {
-//                buyButton.setTitle("$\(price)", for: UIControlState())
-//            }
+            mapView.mapType = .standard
+            mapView.delegate = self
+
+//                if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
+//                    let location = CLLocationCoordinate2DMake(lat, lng)
+//                    pin.coordinate = location
+//                }
+//                mapView.addAnnotation(pin)
+            
 
         }
     }
- 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-
+        
+      
     }
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
-//        setupThumbNailImage()
-        
-        let annoView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "Default")
-        annoView.pinTintColor = #colorLiteral(red: 0.5137254902, green: 0.8470588235, blue: 0.8117647059, alpha: 1)
-        annoView.animatesDrop = true
-        annoView.canShowCallout = true
-        let swiftColor = #colorLiteral(red: 0.5137254902, green: 0.8470588235, blue: 0.8117647059, alpha: 1)
-        annoView.centerOffset = CGPoint(x: 100, y: 400)
-        annoView.pinTintColor = swiftColor
-        
-        // Add a RIGHT CALLOUT Accessory
-        let rightButton = UIButton(type: UIButtonType.detailDisclosure)
-        rightButton.frame = CGRect(x:0, y:0, width:32, height:32)
-        rightButton.layer.cornerRadius = rightButton.bounds.size.width/2
-        rightButton.clipsToBounds = true
-        rightButton.tintColor = #colorLiteral(red: 0.5137254902, green: 0.8470588235, blue: 0.8117647059, alpha: 1)
-        
-        annoView.rightCalloutAccessoryView = rightButton
-        
-    
-        
-        return annoView
-    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         collectionView?.register(ListingSlides.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(TitleCell.self, forCellWithReuseIdentifier: titleId)
         collectionView?.register(AppDetailDescriptionCell.self, forCellWithReuseIdentifier: descriptionId)
         collectionView?.register(MapCell.self, forCellWithReuseIdentifier: mapId)
         collectionView?.showsVerticalScrollIndicator = false
         
-//        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-
-//        collectionView?.register(AppDetailHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView?.backgroundColor = UIColor.white
-//        if mapView.annotations.count != 0 {
-//            annotation = mapView.annotations[0]
-//            mapView.removeAnnotation(annotation)
+        
+//        var mapView = MKMapView()
+//        let pin = MKPointAnnotation()
 //
+//        if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
+//            let location = CLLocationCoordinate2DMake(lat, lng)
+//            pin.coordinate = location
 //        }
-        //        if mapView.annotations.count != 0 {
-        //            annotation = mapView.annotations[0]
-        //            mapView.removeAnnotation(annotation)
-        //        }
-        if let lat = listing?.geo?.lat,
-            let lng = listing?.geo?.lng {
-            let location = CLLocationCoordinate2DMake(CLLocationDegrees(lat), CLLocationDegrees(lng))
-            //            let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, 27500.0, 27500.0)
-            //            mapView.setRegion(coordinateRegion, animated: false)
-            
-            let pin = MKPointAnnotation()
-            
-            
-            pin.coordinate = location
-            pin.title = listing?.address?.full?.capitalized
-            
-            //            if let listPrice = listing?.listPrice {
-            //                let numberFormatter = NumberFormatter()
-            //                numberFormatter.numberStyle = .decimal
-            
-            //                let subTitleCost = "$\(numberFormatter.string(from: NSNumber(value:(UInt64(listPrice))))!)"
-            //                pin.subtitle = subTitleCost
-            
-            
-            mapView.addAnnotation(pin)
-            
-            //            }
-        }
+//        mapView.addAnnotation(pin)
         setupNavBarButtons()
+      
 
     }
     func setupNavBarButtons() {
@@ -126,8 +76,19 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         let videoButton = UIBarButtonItem(image: movieIcon, style: .plain, target: self, action: #selector(handleVideo))
         navigationItem.rightBarButtonItem = videoButton
     }
-    
-    
+
+//    func mapView(_ mapView: MKMapView!, viewFor annotation: MKAnnotation!) -> MKAnnotationView! {
+//        let identifier = "mapId"
+//        var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+//        if view == nil {
+//            view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+//            view?.canShowCallout = true
+//        } else {
+//            view?.annotation = annotation
+//        }
+//        return view
+//
+//    }
     func playVideo() {
         
     }
@@ -146,21 +107,7 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
             player.play()
         }
     }
-//    @objc func handleVideo(url:NSURL) {
-//        print(123)
-//
-//        let vidUrl = listing?.virtualTourUrl
-//
-//        let url = URL(string:vidUrl!)
-//        let player = AVPlayer(url: url!)
-//
-//        let playerController = AVPlayerViewController()
-//
-//        playerController.player = player
-//        present(playerController, animated: true) {
-//            player.play()
-//        }
-//    }
+
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if indexPath.item == 1 {
@@ -177,6 +124,13 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         }
         if indexPath.item == 3 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mapId, for: indexPath) as! MapCell
+            if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
+                let location = CLLocationCoordinate2DMake(lat, lng)
+                pin.coordinate = location
+            }
+            cell.mapView.addAnnotation(pin)
+
+
             
             return cell
             
@@ -185,6 +139,13 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         cell.listing = listing
         return cell
     }
+//    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mapId, for: indexPath) as! MapCell
+//        cell.listing = listing
+//
+////        cell.addSubview(mapView)
+//
+//    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
@@ -221,11 +182,6 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         return 4
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-      
-        
-        
-        
         if indexPath.item == 1 {
             
 //            let dummySize = CGSize(width: view.frame.width - 8 - 8, height: 1000)
@@ -242,7 +198,7 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
             return CGSize(width: view.frame.width, height: rect.height + 30)
         }
         if indexPath.item == 3 {
-            
+        
             
             return CGSize(width: view.frame.width, height: 200)
 
@@ -250,17 +206,9 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         return CGSize(width: view.frame.width, height: 200)
     }
     
-//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//
-//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! AppDetailHeader
-//        header.listing = listing
-//        return header
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: view.frame.width, height: 170)
-//        }
-    }
+   
+    
+}
 
 
 class TitleCell: BaseCell {
@@ -352,124 +300,43 @@ class AppDetailDescriptionCell: BaseCell {
     }
 }
 
-class MapCell: BaseCell, MKMapViewDelegate {
-    
-    var annotation:MKAnnotation!
-    var pointAnnotation:MKPointAnnotation!
-    var pinView:MKPinAnnotationView!
-    var region: MKCoordinateRegion!
-    var mapType: MKMapType!
-    var pin:MKAnnotation!
-    
+
+
+class MapCell: BaseCell, MKMapViewDelegate  {
+    //    var mapView:MKMapView!
+    var mapView = MKMapView()
+//      let pin = MKPointAnnotation()
+
     var listing: Listing? {
         didSet {
-            mapView.delegate = self
-            mapView.addAnnotation(pin)
-
+//            if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
+//                let location = CLLocationCoordinate2DMake(lat, lng)
+//                pin.coordinate = location
+//            }
+//            mapView.addAnnotation(pin)
         }
     }
-    let mapView : MKMapView = {
-       let mv = MKMapView()
-        return mv
-    }()
 
     override func setupViews() {
-        
-        
+//        mapView.addAnnotation(pin)
+
         addSubview(mapView)
-        
         addConstraintsWithFormat("H:|[v0]|", views: mapView)
         addConstraintsWithFormat("V:|[v0(200)]|", views: mapView)
-        
-       
-        
     }
 }
 
-//class AppDetailHeader: BaseCell {
-//
-//    var listing: Listing? {
-//        didSet {
-//            setupThumbNailImage()
-//            if let imageName = listing?.photos?.first {
-//                imageView.image = UIImage(named: imageName)
-//            }
-//
-//            nameLabel.text = listing?.address?.full?.capitalized
-//
-//            if let price = listing?.listPrice {
-//                buyButton.setTitle("$\(price)", for: UIControlState())
-//            }
-//        }
-//    }
-//
-//    let imageView: UIImageView = {
-//        let iv = UIImageView()
-//        iv.contentMode = .scaleAspectFill
-//        iv.layer.cornerRadius = 16
-//        iv.layer.masksToBounds = true
-//        return iv
-//    }()
-//    func setupThumbNailImage() {
-//        if let thumbnailImageUrl = listing?.photos?.first {
-//            imageView.loadImageUsingUrlString(urlString: thumbnailImageUrl)
-//        }
-//    }
-//    let segmentedControl: UISegmentedControl = {
-//        let sc = UISegmentedControl(items: ["Details", "Reviews", "Related"])
-//        sc.tintColor = UIColor.darkGray
-//        sc.selectedSegmentIndex = 0
-//        return sc
-//    }()
-//
-//    let nameLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "TEST"
-//        label.font = UIFont.systemFont(ofSize: 16)
-//        return label
-//    }()
-//
-//    let buyButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.setTitle("BUY", for: UIControlState())
-//        button.layer.borderColor = UIColor(red: 0, green: 129/255, blue: 250/255, alpha: 1).cgColor
-//        button.layer.borderWidth = 1
-//        button.layer.cornerRadius = 5
-//        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-//        return button
-//    }()
-//
-//    let dividerLineView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
-//        return view
-//    }()
-//
-//    override func setupViews() {
-//        super.setupViews()
-//
-//        addSubview(imageView)
-//        addSubview(segmentedControl)
-//        addSubview(nameLabel)
-//        addSubview(buyButton)
-//        addSubview(dividerLineView)
-//
-//        addConstraintsWithFormat("H:|-14-[v0(100)]-8-[v1]|", views: imageView, nameLabel)
-//        addConstraintsWithFormat("V:|-14-[v0(100)]", views: imageView)
-//
-//        addConstraintsWithFormat("V:|-14-[v0(20)]", views: nameLabel)
-//
-//        addConstraintsWithFormat("H:|-40-[v0]-40-|", views: segmentedControl)
-//        addConstraintsWithFormat("V:[v0(34)]-8-|", views: segmentedControl)
-//
-//        addConstraintsWithFormat("H:[v0(160)]-14-|", views: buyButton)
-//        addConstraintsWithFormat("V:[v0(32)]-56-|", views: buyButton)
-//
-//        addConstraintsWithFormat("H:|[v0]|", views: dividerLineView)
-//        addConstraintsWithFormat("V:[v0(1)]|", views: dividerLineView)
-//    }
-//
-//}
+
+
+
+
+
+
+
+
+
+
+
 
 extension UIView {
     

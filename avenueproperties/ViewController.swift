@@ -14,6 +14,7 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     let cellId = "cellId"
     
     var listings: [Listing]?
+//    var listingDetailController:ListingDetailController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,8 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     func showListingDetailController(_ listing: Listing) {
         let layout = UICollectionViewFlowLayout()
         let listingDetailController = ListingDetailController(collectionViewLayout: layout)
+        
+        
         listingDetailController.listing = listing
         
 

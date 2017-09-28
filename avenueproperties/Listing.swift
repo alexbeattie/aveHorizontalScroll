@@ -30,8 +30,8 @@ struct Listing: Decodable {
         var bedrooms: Int?
     }
     struct Geo: Decodable {
-        var lat: Float?
-        var lng: Float?
+        var lat: Double?
+        var lng: Double?
     }
     static func fetchListing(_ completionHandler: @escaping ([Listing]) -> ()) {
 //        let baseUrl = URL(string: "http://localhost:8888/simplyrets/file.js")
@@ -49,7 +49,7 @@ struct Listing: Decodable {
                 let decoder = JSONDecoder()
                 let listing = try decoder.decode([Listing].self, from: data)
                 
-//                print(listing)
+                print(listing)
                 DispatchQueue.main.async(execute: { () -> Void in
                     completionHandler(listing)
                 })
