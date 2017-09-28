@@ -49,7 +49,7 @@ struct Listing: Decodable {
                 let decoder = JSONDecoder()
                 let listing = try decoder.decode([Listing].self, from: data)
                 
-                print(listing)
+                //print(listing)
                 DispatchQueue.main.async(execute: { () -> Void in
                     completionHandler(listing)
                 })

@@ -82,15 +82,15 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
     }
 
   
-    func playVideo() {
-        
-    }
+    
     
     @objc func handleVideo(url:NSURL) {
         print(123)
         
-        let vidUrl = listing?.virtualTourUrl
-        let url = URL(string:vidUrl!)
+        
+        guard let vidUrl = listing?.virtualTourUrl else { return }
+        
+        let url = URL(string:vidUrl)
         let player = AVPlayer(url: url!)
         
         let playerController = AVPlayerViewController()
@@ -105,8 +105,6 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         
         if indexPath.item == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: titleId, for: indexPath) as! TitleCell
-//            let theAddress = listing?.address?.full?.capitalized
-
             cell.listing = listing
             return cell
         }
@@ -142,11 +140,6 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
                 cell.mapView.addAnnotation(pin)
 
             }
-            
-            cell.mapView.addAnnotation(pin)
-
-
-            
             return cell
             
         }
@@ -255,7 +248,7 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
 
 //        let attributedText = NSMutableAttributedString(string: theAddress, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
 //        let attributedText = NSMutableAttributedString(string: "\(theAddress ?? "")\n", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
-        let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 4)])
+        let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)])
 
         
         let style = NSMutableParagraphStyle()
@@ -265,7 +258,7 @@ class ListingDetailController: UICollectionViewController, UICollectionViewDeleg
         attributedText.addAttribute(NSAttributedStringKey.paragraphStyle, value: style, range: range)
         
         if let desc = listing?.remarks {
-            attributedText.append(NSAttributedString(string: desc, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 11), NSAttributedStringKey.foregroundColor: UIColor.darkGray]))
+            attributedText.append(NSAttributedString(string: desc, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14), NSAttributedStringKey.foregroundColor: UIColor.darkGray]))
         }
         
         return attributedText
@@ -351,7 +344,7 @@ class TitleCell: BaseCell {
         addSubview(costLabel)
         
         addConstraintsWithFormat("H:|[v0]|", views: viewContainer)
-        addConstraintsWithFormat("V:|[v0(40)]|", views: viewContainer)
+//        addConstraintsWithFormat("V:|[v0(40)]|", views: viewContainer)
         
         addConstraintsWithFormat("H:|[v0]|", views: nameLabel)
         addConstraintsWithFormat("V:|[v0]-8-|", views: nameLabel)
@@ -383,9 +376,6 @@ class AppDetailDescriptionCell: BaseCell {
         addSubview(textView)
         addSubview(dividerLineView)
         
-//        addConstraintsWithFormat("H:[v0]", views: nameLabel)
-//        addConstraintsWithFormat("V:|-8-[v0]", views: nameLabel)
-        
         addConstraintsWithFormat("H:|-8-[v0]-8-|", views: textView)
         addConstraintsWithFormat("H:|-14-[v0]-14-|", views: dividerLineView)
         
@@ -401,18 +391,18 @@ class MapCell: BaseCell, MKMapViewDelegate  {
 
     var listing: Listing? {
         didSet {
-            if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
-                
-                let location = CLLocationCoordinate2DMake(lat, lng)
-                let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, 27500.0, 27500.0)
-                mapView.setRegion(coordinateRegion, animated: false)
-                
-                let pin = MKPointAnnotation()
-                
-                pin.coordinate = location
-                mapView.addAnnotation(pin)
-                
-            }
+//            if let lat = listing?.geo?.lat, let lng = listing?.geo?.lng {
+//
+//                let location = CLLocationCoordinate2DMake(lat, lng)
+//                let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, 27500.0, 27500.0)
+//                mapView.setRegion(coordinateRegion, animated: false)
+//
+//                let pin = MKPointAnnotation()
+//
+//                pin.coordinate = location
+//                mapView.addAnnotation(pin)
+//
+//            }
         }
     }
 
