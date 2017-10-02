@@ -18,8 +18,6 @@
 		8E38715C1F799212000B4CE7 /* LIstingSlides.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E38715B1F799212000B4CE7 /* LIstingSlides.swift */; };
 		8E4B0A671F7D79D700372486 /* CutstomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4B0A661F7D79D700372486 /* CutstomTabBar.swift */; };
 		8E4B0A691F7D81AC00372486 /* AllListingsMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4B0A681F7D81AC00372486 /* AllListingsMapVC.swift */; };
-		8E4B0A6B1F7D9B8200372486 /* AllListingsAnno.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4B0A6A1F7D9B8200372486 /* AllListingsAnno.swift */; };
-		8E4B0A6D1F7DAFF300372486 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4B0A6C1F7DAFF300372486 /* ApiService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,8 +34,6 @@
 		8E38715B1F799212000B4CE7 /* LIstingSlides.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LIstingSlides.swift; sourceTree = "<group>"; };
 		8E4B0A661F7D79D700372486 /* CutstomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutstomTabBar.swift; sourceTree = "<group>"; };
 		8E4B0A681F7D81AC00372486 /* AllListingsMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllListingsMapVC.swift; sourceTree = "<group>"; };
-		8E4B0A6A1F7D9B8200372486 /* AllListingsAnno.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllListingsAnno.swift; sourceTree = "<group>"; };
-		8E4B0A6C1F7DAFF300372486 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		AC763FE621BDDD672E9D24F8 /* Pods-avenueproperties.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-avenueproperties.debug.xcconfig"; path = "Pods/Target Support Files/Pods-avenueproperties/Pods-avenueproperties.debug.xcconfig"; sourceTree = "<group>"; };
 		B34CB1374520126E4AD6B83D /* Pods-avenueproperties.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-avenueproperties.release.xcconfig"; path = "Pods/Target Support Files/Pods-avenueproperties/Pods-avenueproperties.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,13 +88,19 @@
 				8E18CA471F794C880000A707 /* Listing.swift */,
 				8E3871591F79898C000B4CE7 /* ListingDetailController.swift */,
 				8E4B0A661F7D79D700372486 /* CutstomTabBar.swift */,
-				8E4B0A681F7D81AC00372486 /* AllListingsMapVC.swift */,
-				8E4B0A6C1F7DAFF300372486 /* ApiService.swift */,
-				8E4B0A6A1F7D9B8200372486 /* AllListingsAnno.swift */,
-				8E14DCE81F7B0D0300B19146 /* Annotation.swift */,
+				8E4E35C71F82BEDB00B79002 /* Map */,
 				8E38715B1F799212000B4CE7 /* LIstingSlides.swift */,
 			);
 			path = avenueproperties;
+			sourceTree = "<group>";
+		};
+		8E4E35C71F82BEDB00B79002 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				8E4B0A681F7D81AC00372486 /* AllListingsMapVC.swift */,
+				8E14DCE81F7B0D0300B19146 /* Annotation.swift */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 		97D7D7E8185386ACA4E7902B /* Frameworks */ = {
@@ -234,10 +236,8 @@
 				8E4B0A671F7D79D700372486 /* CutstomTabBar.swift in Sources */,
 				8E18CA361F794C470000A707 /* ViewController.swift in Sources */,
 				8E38715A1F79898C000B4CE7 /* ListingDetailController.swift in Sources */,
-				8E4B0A6B1F7D9B8200372486 /* AllListingsAnno.swift in Sources */,
 				8E38715C1F799212000B4CE7 /* LIstingSlides.swift in Sources */,
 				8E18CA481F794C880000A707 /* Listing.swift in Sources */,
-				8E4B0A6D1F7DAFF300372486 /* ApiService.swift in Sources */,
 				8E14DCE91F7B0D0300B19146 /* Annotation.swift in Sources */,
 				8E4B0A691F7D81AC00372486 /* AllListingsMapVC.swift in Sources */,
 				8E18CA341F794C470000A707 /* AppDelegate.swift in Sources */,

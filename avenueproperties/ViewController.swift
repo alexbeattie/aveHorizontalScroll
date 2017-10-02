@@ -14,6 +14,9 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     let cellId = "cellId"
     
     var listings: [Listing]?
+//    var images : [imageFile] = []
+
+
 //    var listingDetailController:ListingDetailController?
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -24,15 +27,42 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         super.viewDidLoad()
         Listing.fetchListing { (listings) -> () in
             self.listings = listings
+           
             self.collectionView?.reloadData()
+            
         }
+
+       
+//        let ageSortDescriptor = NSSortDescriptor(key: "listPrice", ascending: false)
+//
+//        let sortedByAge = (listings! as NSArray).sortedArray(using: [ageSortDescriptor])
+//        print(sortedByAge)
+        
+        
         navigationItem.title = "Avenue Properties"
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(HomeCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.dataSource = self
         collectionView?.delegate = self
-        
+//        setupNavBarButtons()
     }
+    
+
+//    func setupNavBarButtons() {
+//        let movieIcon = UIImage(named: "movie")?.withRenderingMode(.alwaysOriginal)
+//        let videoButton = UIBarButtonItem(image: movieIcon, style: .plain, target: self, action: #selector(handleVideo))
+//        navigationItem.rightBarButtonItem = videoButton
+//    }
+//
+//    @objc func handleVideo(_ listing: Listing) {
+//
+//        let mapVC = AllListingsMapVC()
+//        mapVC.listing = listing
+//        navigationController?.pushViewController(mapVC, animated: true)
+//
+//
+//    }
+    
     func showListingDetailController(_ listing: Listing) {
         let layout = UICollectionViewFlowLayout()
         let listingDetailController = ListingDetailController(collectionViewLayout: layout)
@@ -52,7 +82,6 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 
         return collectionView
-
     }()
 
    
@@ -60,11 +89,19 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeCell
+        
+       
+    
+        
+
+        
         cell.listing = listings?[indexPath.item]
         return cell
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = listings?.count {
+          
+
             return count
         }
         return 0
